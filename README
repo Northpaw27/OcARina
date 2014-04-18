@@ -1,0 +1,18 @@
+README
+_______________
+OcARino V1.0
+by Kyle Mcaslan 18/04/14
+———————————————
+
+This project is an inexpensive attempt to create a midi wind instrument.
+
+Hardware:
+The best, cheapest method I found to detect blowing was to reverse engineer a basic dc motor. By attaching the motor to ground and an analog input, the motor will generate a small amount of electricity and give the microcontroller a number representative of the speed of the motor being blown. There are downsides to this method such a noise (not caused by midi) and a relatively small dynamic range. I’d welcome any ideas of other methods!
+The microcontroller I used was the Teensy 3.0 by PJRC.
+http://www.pjrc.com/teensy/index.html
+This is a very small controller with pretty robust and simple midi capabilities. I believe it may also be possible with an Arduino but I’m not sure the midi system is a strong. It connects via micro-B usb and i’m using Native Instruments Massive to general digital sounds.
+
+Software:
+The Teensy requires an adapted version of the arduino IDE available on the PJRC website. Quick and easy to install.
+
+The code itself is in the ocARino folder.
