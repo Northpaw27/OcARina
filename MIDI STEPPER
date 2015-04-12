@@ -1,0 +1,69 @@
+
+// 0 = pedal
+// 1 = knob
+// 2 = switch
+int Pedal;
+int Knob;
+int Switch;
+
+const int numReadings = 10;
+
+int readingsp[numReadings];
+int readIndexp = 0;
+int totalp = 0;
+int averagep = 0;
+
+int readingsk[numReadings];
+int readIndexk = 0;
+int totalk = 0;
+int averagek = 0;
+
+void setup()
+{
+  for (int thisReading = 0; thisReading < numReadings; thisReading++)
+    readingsp[thisReading] = 0;
+}
+
+void loop()
+{
+  int PrevP = 0;
+  int PrevK = 0;
+  int P = analogRead(A0) / 6;
+  int K = analogRead(A1) / 9;
+
+  totalp = totalp - readingsp[readIndexp];
+  readingsp[readIndexp] = P;
+  totalp = totalp + readingsp[readIndexp];
+  readIndexp = readIndexp + 1;
+  if (readIndexp >= numReadings)
+    readIndexp = 0;
+  averagep = totalp / numReadings;
+
+  totalk = totalk - readingsk[readIndexk];
+  readingsk[readIndexk] = K;
+  totalk = totalk + readingsk[readIndexk];
+  readIndexk = readIndexk + 1;
+  if (readIndexk >= numReadings)
+    readIndexk = 0;
+  averagek = totalk / numReadings;
+
+
+  if ( averagek > PrevK )
+  {
+    usbMIDI.sendControlChange(9, averagek, 1);
+  }
+
+
+  if (analogRead(A2) > 1000 && averagep != PrevP)
+  {
+    usbMIDI.sendControlChange(10, averagep, 1);
+  }
+
+  if (analogRead(A2) < 1000 && averagep != PrevP)
+  {
+    usbMIDI.sendControlChange(11, averagep, 1);
+  }
+  PrevP = averagep;
+  PrevK = averagek;
+  delay(10);
+}
